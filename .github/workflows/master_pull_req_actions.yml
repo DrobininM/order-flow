@@ -22,11 +22,23 @@ jobs:
         dotnet-version: '10.x'
         
     - name: Restore dependencies
-      run: dotnet restore
-      
+      shell: bash
+      run: |
+        set -euo pipefail
+        while IFS= read -r solution; do
+          echo "Restoring: $solution"
+          dotnet restore "$solution"
+        done < <(find . -name "*.sln" -type f)
+
     - name: Build
-      run: dotnet build --configuration Debug --no-restore
-      
+      shell: bash
+      run: |
+        set -euo pipefail
+        while IFS= read -r solution; do
+          echo "Building: $solution"
+          dotnet build "$solution" --configuration Debug --no-restore
+        done < <(find . -name "*.sln" -type f)
+
     - name: Run Unit Tests
       shell: bash
       run: |
@@ -38,7 +50,7 @@ jobs:
             --results-directory TestResults \
             --verbosity normal
         done < <(find . -name "*.UnitTests.csproj" -type f)
-        
+
     - name: Run Integration Tests
       shell: bash
       run: |
