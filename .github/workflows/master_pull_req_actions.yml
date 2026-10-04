@@ -1,0 +1,60 @@
+name: Run tests when merge to master
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [ master ]
+    types: [opened, synchronize, reopened]
+
+  push:
+    branches: [ master ]
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.x'
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build --configuration Debug --no-restore
+      
+    - name: Run Unit Tests
+      shell: bash
+      run: |
+        set -euo pipefail
+        while IFS= read -r project; do
+          echo "Running tests for: $project"
+          dotnet test "$project" --configuration Debug --no-build \
+            --logger "trx;LogFileName=$(basename "$project" .csproj).trx" \
+            --results-directory TestResults \
+            --verbosity normal
+        done < <(find . -name "*.UnitTests.csproj" -type f)
+        
+    - name: Run Integration Tests
+      shell: bash
+      run: |
+        set -euo pipefail
+        while IFS= read -r project; do
+          echo "Running integration tests for: $project"
+          dotnet test "$project" --configuration Debug --no-build \
+            --logger "trx;LogFileName=$(basename "$project" .csproj)-integration.trx" \
+            --results-directory TestResults \
+            --verbosity normal
+        done < <(find . -name "*.IntegrationTests.csproj" -type f)
+        
+    - name: Upload Test Results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: TestResults/
+        retention-days: 30

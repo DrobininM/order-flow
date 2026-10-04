@@ -1,0 +1,109 @@
+## .NET/.gitignore
+.vs/
+.vscode/
+*.user
+*.suo
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+*.orig
+*.ncb
+*.aps
+*.pch
+*.ilk
+*.metagen
+*.tlb
+*.tli
+*.tlh
+*.clw
+*.obj
+*.exe
+*.dll
+*.lib
+*.out
+*.manifest
+*.dep
+*.bin
+*.log
+*.cache
+*.suo
+*.session
+*.snk
+*.GeneratedMSBuildEditorConfig.editorconfig
+
+## Project-specific
+src/*/bin/
+src/*/obj/
+*/bin/
+*/obj/
+
+## Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+## NuGet
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
+
+## ASP.NET
+App_Data/
+**/*.Publish/
+**/*.pubxml
+**/Properties/PublishProfiles/
+
+## User-specific
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+## IDE
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+## Test results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.trx
+
+## Node (если используется)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+## Environment
+.env
+.env.local
+.env.*.local
+
+**/appsettings.Development.json
+postgres_data/
+
+.deepseek
